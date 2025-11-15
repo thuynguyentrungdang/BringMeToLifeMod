@@ -3,7 +3,6 @@ using Comfort.Common;
 using SPT.Reflection.Patching;
 using System;
 using System.Reflection;
-using Fika.Core.Main.Utils;
 using UnityEngine;
 using RevivalMod.Features;
 using RevivalMod.Components;
@@ -24,7 +23,7 @@ namespace RevivalMod.Patches
             {
                 Plugin.LogSource.LogInfo("Game started");
 
-                if (FikaBackendUtils.IsHeadless)
+                if (Application.isBatchMode)
                 {
                     Plugin.LogSource.LogInfo("Running on headless, skipping OnGameStarted patch...");
                     return;

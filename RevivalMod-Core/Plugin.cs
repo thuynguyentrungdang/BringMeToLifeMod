@@ -49,7 +49,8 @@ namespace RevivalMod
 
         void TryInitFikaAssembly()
         {
-            if (!FikaInstalled) return;
+            if (!FikaInstalled) 
+                return;
 
             try
             {
