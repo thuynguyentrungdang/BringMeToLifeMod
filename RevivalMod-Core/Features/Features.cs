@@ -580,7 +580,7 @@ namespace RevivalMod.Features
         /// <summary>
         /// Revives a teammate by a player with a defibrillator
         /// </summary>
-        public static bool PerformTeammateRevival(string targetPlayerId, Player player)
+        public static void PerformTeammateRevival(string targetPlayerId, Player player)
         {
             try
             {
@@ -592,13 +592,10 @@ namespace RevivalMod.Features
                 RemovePlayerFromCriticalState(targetPlayerId);
                 
                 FikaBridge.SendReviveMePacket(targetPlayerId, player.ProfileId);
-
-                return true;
             }
             catch (Exception ex)
             {
                 Plugin.LogSource.LogError($"Error in teammate revival: {ex}");
-                return false;
             }
         }
 
