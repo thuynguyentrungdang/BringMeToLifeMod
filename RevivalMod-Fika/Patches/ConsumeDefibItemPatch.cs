@@ -5,6 +5,7 @@ using Fika.Core.Main.Players;
 using HarmonyLib;
 using SPT.Reflection.Patching;
 using RevivalMod.Features;
+using RevivalMod.Helpers;
 
 namespace RevivalMod.Patches;
 
@@ -15,6 +16,9 @@ public class ConsumeDefibItemPatch
     [PatchPrefix]
     private static void PatchPrefix(Player ___player, Item ___defibItem)
     {
+        if (RevivalModSettings.KEEP_DEFIB_ITEM == true) {
+            return;
+        }
         try
         {
             if (___player is not FikaPlayer)

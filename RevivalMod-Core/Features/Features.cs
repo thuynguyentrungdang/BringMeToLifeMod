@@ -604,6 +604,9 @@ namespace RevivalMod.Features
         /// </summary>
         public static void ConsumeDefibItem(Player player, Item defibItem)
         {
+            if (RevivalModSettings.KEEP_DEFIB_ITEM == true) {
+                return;
+            }
             try
             {
                 if (player == null)
