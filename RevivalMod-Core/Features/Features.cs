@@ -163,20 +163,24 @@ namespace RevivalMod.Features
             {
                 Plugin.LogSource.LogError("player.MovementContext is null!");
             }
-
-            if (criticalStateMainTimer is not null &&
-                criticalStateMainTimer.IsRunning)
-                _playerList[playerId].CriticalTimer -= Time.deltaTime;
             
-            if (criticalStateMainTimer is not null)
-                // Update the main critical state timer
+            // Update the main critical state timer
+            if (criticalStateMainTimer != null)
+            {
+                if (criticalStateMainTimer.IsRunning)
+                {
+                    TimeSpan remainingCriticalTime = criticalStateMainTimer.GetTimeSpan();
+                    _playerList[playerId].CriticalTimer = (float)remainingCriticalTime.TotalSeconds;
+                }
+                
                 criticalStateMainTimer.Update();
+            }
 
             // Check for give up key or timer runs out
             if (_playerList[playerId].CriticalTimer <= 0 ||
                 Input.GetKeyDown(RevivalModSettings.GIVE_UP_KEY.Value))
             {
-                if (criticalStateMainTimer is not null)
+                if (criticalStateMainTimer != null)
                 {
                     criticalStateMainTimer.StopTimer();
                     criticalStateMainTimer = null;
@@ -202,7 +206,7 @@ namespace RevivalMod.Features
                 return;
             
             KeyCode revivalKey = RevivalModSettings.SELF_REVIVAL_KEY.Value;
-
+            
             // Start key hold tracking when key is first pressed
             if (Input.GetKeyDown(revivalKey))
             {
