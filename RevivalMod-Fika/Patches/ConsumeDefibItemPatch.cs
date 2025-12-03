@@ -5,6 +5,7 @@ using Fika.Core.Main.Players;
 using HarmonyLib;
 using SPT.Reflection.Patching;
 using RevivalMod.Features;
+using RevivalMod.Helpers;
 
 namespace RevivalMod.Patches;
 
@@ -15,12 +16,21 @@ public class ConsumeDefibItemPatch
     [PatchPrefix]
     private static void PatchPrefix(Player ___player, Item ___defibItem)
     {
+        if (RevivalModSettings.KEEP_DEFIB_ITEM == true) {
+            return;
+        }
         try
         {
             if (___player is not FikaPlayer fikaPlayer)
                 return;
 
+            if (___defibItem == null)
+                return;
+
+            FikaPlayer fikaPlayer = (FikaPlayer)___player;
             InventoryController inventoryController = fikaPlayer.InventoryController;
+            
+            // Discard the item
             GStruct153 discardResult = InteractionsHandlerClass.Discard(___defibItem, inventoryController, true);
 
             if (discardResult.Failed)

@@ -33,6 +33,7 @@ namespace RevivalMod.Helpers
         public static float REVIVAL_RANGE_Y; 
         public static float REVIVAL_RANGE_Z;
         public static string ITEM_ID;
+        public static bool KEEP_DEFIB_ITEM;
 
         // Hardcore Mode
         public static bool GHOST_MODE;
@@ -95,6 +96,8 @@ namespace RevivalMod.Helpers
             REVIVAL_RANGE_Z = MOD_CONFIG.HitboxZDimension;
 
             ITEM_ID = MOD_CONFIG.ItemId;
+
+            KEEP_DEFIB_ITEM = MOD_CONFIG.KeepDefibItem;
 
             #endregion
 

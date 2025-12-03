@@ -608,12 +608,17 @@ namespace RevivalMod.Features
         /// </summary>
         public static void ConsumeDefibItem(Player player, Item defibItem)
         {
+            if (RevivalModSettings.KEEP_DEFIB_ITEM == true) {
+                return;
+            }
             try
             {
-                if (player == null)
+                if (player == null || defibItem == null)
                     return;
                 
                 InventoryController inventoryController = player.InventoryController;
+                
+                // Discard the item
                 GStruct153 discardResult = InteractionsHandlerClass.Discard(defibItem, inventoryController, true);
 
                 if (discardResult.Failed)
@@ -721,14 +726,17 @@ namespace RevivalMod.Features
                 player.MovementContext.SetPoseLevel(0f, true);
                 player.MovementContext.IsInPronePose = true;
 
-                // Make player invisible to AI and mark as dead
-                // But for hardcore mode, we want them to still be targetable ?
-                player.ActiveHealthController.IsAlive = true;
-
-                // Enable God mode
+                // Enable Ghost mode - make AI ignore downed player
+                // NOTE: We do NOT modify IsAlive - that breaks the death animation when Kill() is called
+                // Ghost mode works through the synced HashSet (PlayersInGhostMode) + SAIN patch
                 if (RevivalModSettings.GHOST_MODE)
-                    player.ActiveHealthController.IsAlive = false;
+                {
+                    // Sync ghost mode state to other machines (for SAIN patch on headless servers)
+                    Plugin.LogSource.LogInfo($"[GhostMode] Sending ghost mode packet: playerId={playerId}, isAlive=false");
+                    FikaBridge.SendPlayerGhostModePacket(playerId, false);
+                }
                 
+                // Enable God mode - prevent damage
                 if (RevivalModSettings.GOD_MODE)
                     player.ActiveHealthController.SetDamageCoeff(0);
 
@@ -788,7 +796,10 @@ namespace RevivalMod.Features
 
                 // Restore awareness and visibility
                 player.Awareness = _playerList[playerId].OriginalAwareness;
-                player.ActiveHealthController.IsAlive = true;
+
+                // Sync ghost mode state to host so AI can target this player again
+                if (RevivalModSettings.GHOST_MODE)
+                    FikaBridge.SendPlayerGhostModePacket(playerId, true);
 
                 Plugin.LogSource.LogInfo($"Removed revivable state from player {playerId}");
             }
@@ -813,8 +824,9 @@ namespace RevivalMod.Features
                     return;
                 }
 
-                // Make player targetable by AI
-                healthController.IsAlive = true;
+                // Sync ghost mode state to host so AI can target this player again
+                if (RevivalModSettings.GHOST_MODE)
+                    FikaBridge.SendPlayerGhostModePacket(player.ProfileId, true);
                 
                 // Disable God mode
                 if (RevivalModSettings.GOD_MODE)
@@ -1073,11 +1085,28 @@ namespace RevivalMod.Features
                 
                 RemovePlayerFromCriticalState(playerId);
                 
-                // Use original Kill method, bypassing our patch
-                player.ActiveHealthController.IsAlive = true;
+                // CRITICAL: Reset god mode damage coefficient FIRST - otherwise Kill() won't work
+                if (RevivalModSettings.GOD_MODE)
+                {
+                    player.ActiveHealthController.SetDamageCoeff(1f);
+                }
+                
+                // Sync ghost mode state to host BEFORE death
+                // This ensures the server knows the player is no longer in ghost mode
+                if (RevivalModSettings.GHOST_MODE)
+                {
+                    Plugin.LogSource.LogInfo($"[ForcePlayerDeath] Sending ghost mode exit packet for {playerId}");
+                    FikaBridge.SendPlayerGhostModePacket(playerId, true);
+                }
+                
+                // NOTE: Do NOT modify IsAlive before Kill() - let Fika sync the death properly
+                Plugin.LogSource.LogInfo($"[ForcePlayerDeath] Calling Kill() for {playerId}");
+                
+                // Let Kill() handle all the death logic - don't modify other state
+                // The game's death process should reset movement, pose, etc.
                 player.ActiveHealthController.Kill(damageType);
 
-                Plugin.LogSource.LogInfo($"Player {playerId} has died after critical state");
+                Plugin.LogSource.LogInfo($"[ForcePlayerDeath] Player {playerId} has died after critical state");
             }
             catch (Exception ex)
             {

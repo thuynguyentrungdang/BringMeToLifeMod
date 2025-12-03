@@ -85,6 +85,24 @@ namespace RevivalMod.FikaModule.Packets
         }
     }
 
+    public struct PlayerGhostModePacket : INetSerializable
+    {
+        public string playerId;
+        public bool isAlive;  // false = ghost mode active (AI ignores), true = normal
+
+        public void Deserialize(NetDataReader reader)
+        {
+            playerId = reader.GetString();
+            isAlive = reader.GetBool();
+        }
+
+        public void Serialize(NetDataWriter writer)
+        {
+            writer.Put(playerId ?? string.Empty);
+            writer.Put(isAlive);
+        }
+    }
+
     public struct PlayerPositionPacket : INetSerializable
     {
         public string playerId;

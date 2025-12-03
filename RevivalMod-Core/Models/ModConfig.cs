@@ -21,4 +21,5 @@ public class ModConfig
     public bool HeadshotsAreFatal { get; set; }
     public float CriticalStateChance { get; set; }
     public string ItemId { get; set; }
+    public bool KeepDefibItem { get; set; }
 }
