@@ -615,28 +615,7 @@ namespace RevivalMod.Features
                 
                 InventoryController inventoryController = player.InventoryController;
                 
-                // Check if item has a MedKitComponent (multi-use medical item like Surv-12)
-                var medKitComponent = defibItem.GetItemComponent<MedKitComponent>();
-                if (medKitComponent != null)
-                {
-                    float resourceToConsume = RevivalModSettings.RESOURCE_HP_TO_CONSUME;
-                    
-                    // If there's enough resource left, just decrement
-                    if (medKitComponent.HpResource > resourceToConsume)
-                    {
-                        medKitComponent.HpResource -= resourceToConsume;
-                        
-                        // Trigger item refresh to sync the change to UI and server
-                        defibItem.RaiseRefreshEvent(false, false);
-                        
-                        Plugin.LogSource.LogInfo($"Consumed {resourceToConsume} from revival item. Remaining: {medKitComponent.HpResource}/{medKitComponent.MaxHpResource}");
-                        return;
-                    }
-                    // Otherwise fall through to discard the depleted item
-                    Plugin.LogSource.LogInfo($"Revival item depleted, discarding.");
-                }
-                
-                // No resource component or resource depleted - discard the entire item
+                // Discard the item
                 GStruct153 discardResult = InteractionsHandlerClass.Discard(defibItem, inventoryController, true);
 
                 if (discardResult.Failed)

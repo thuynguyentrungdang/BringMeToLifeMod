@@ -18,6 +18,5 @@
   "headshotsAreFatal": false,
   "criticalStateChange": 0.75,
   "itemId": "5c052e6986f7746b207bc3c9",
-  "keepDefibItem": false,
-  "resourceHpToConsume": 1
+  "keepDefibItem": false
 }

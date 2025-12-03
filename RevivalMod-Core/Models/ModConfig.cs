@@ -22,5 +22,4 @@ public class ModConfig
     public float CriticalStateChance { get; set; }
     public string ItemId { get; set; }
     public bool KeepDefibItem { get; set; }
-    public float ResourceHpToConsume { get; set; }
 }
