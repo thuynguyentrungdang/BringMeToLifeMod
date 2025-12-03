@@ -276,11 +276,14 @@ namespace RevivalMod.FikaModule.Common
 
         private static void OnPlayerPositionPacketReceived(PlayerPositionPacket packet, NetPeer peer)
         {
-            if (FikaBackendUtils.IsServer && FikaBackendUtils.IsHeadless)
+            // Server (player host or headless) always forwards to all clients
+            if (FikaBackendUtils.IsServer)
             {
                 SendPlayerPositionPacket(packet.playerId, packet.timeOfDeath, packet.position);
             }
-            else
+            
+            // Non-headless machines (player hosts and clients) process the packet
+            if (!FikaBackendUtils.IsHeadless)
             {
                 RMSession.AddToCriticalPlayers(packet.playerId, packet.position);
             }
@@ -288,11 +291,14 @@ namespace RevivalMod.FikaModule.Common
         
         private static void OnRemovePlayerFromCriticalPlayersListPacketReceived(RemovePlayerFromCriticalPlayersListPacket packet, NetPeer peer)
         {
-            if (FikaBackendUtils.IsServer && FikaBackendUtils.IsHeadless)
+            // Server (player host or headless) always forwards to all clients
+            if (FikaBackendUtils.IsServer)
             {
                 SendRemovePlayerFromCriticalPlayersListPacket(packet.playerId);
             }
-            else
+            
+            // Non-headless machines (player hosts and clients) process the packet
+            if (!FikaBackendUtils.IsHeadless)
             {
                 RMSession.RemovePlayerFromCriticalPlayers(packet.playerId);
             }
@@ -308,11 +314,14 @@ namespace RevivalMod.FikaModule.Common
         /// <param name="peer">The <see cref="NetPeer"/> that sent the packet.</param>
         private static void OnReviveMePacketReceived(ReviveMePacket packet, NetPeer peer)
         {
-            if (FikaBackendUtils.IsServer && FikaBackendUtils.IsHeadless)
+            // Server (player host or headless) always forwards to all clients
+            if (FikaBackendUtils.IsServer)
             {
                 SendReviveMePacket(packet.reviveeId, packet.reviverId);
             }
-            else
+            
+            // Non-headless machines (player hosts and clients) process the packet
+            if (!FikaBackendUtils.IsHeadless)
             {
                 bool revived = RevivalFeatures.TryPerformRevivalByTeammate(packet.reviveeId);
                 
@@ -326,11 +335,14 @@ namespace RevivalMod.FikaModule.Common
 
         private static void OnReviveSucceedPacketReceived(RevivedPacket packet, NetPeer peer)
         {
-            if (FikaBackendUtils.IsServer && FikaBackendUtils.IsHeadless)
+            // Server (player host or headless) always forwards to all clients
+            if (FikaBackendUtils.IsServer)
             {
                 SendReviveSucceedPacket(packet.reviverId, peer);
             }
-            else
+            
+            // Non-headless machines (player hosts and clients) process the packet
+            if (!FikaBackendUtils.IsHeadless)
             {
                 NotificationManagerClass.DisplayMessageNotification(
                         $"Successfully revived your teammate!",
@@ -342,11 +354,14 @@ namespace RevivalMod.FikaModule.Common
 
         private static void OnReviveStartedPacketReceived(ReviveStartedPacket packet, NetPeer peer)
         {
-            if (FikaBackendUtils.IsServer && FikaBackendUtils.IsHeadless)
+            // Server (player host or headless) always forwards to all clients
+            if (FikaBackendUtils.IsServer)
             {
                 SendReviveStartedPacket(packet.reviveeId, packet.reviverId);
             }
-            else
+            
+            // Non-headless machines (player hosts and clients) process the packet
+            if (!FikaBackendUtils.IsHeadless)
             {
                 if (FikaBackendUtils.Profile.ProfileId != packet.reviveeId)
                     return;
@@ -364,11 +379,14 @@ namespace RevivalMod.FikaModule.Common
 
         private static void OnReviveCanceledPacketReceived(ReviveCanceledPacket packet, NetPeer peer)
         {
-            if (FikaBackendUtils.IsServer && FikaBackendUtils.IsHeadless)
+            // Server (player host or headless) always forwards to all clients
+            if (FikaBackendUtils.IsServer)
             {
                 SendReviveCanceledPacket(packet.reviveeId, packet.reviverId);
             }
-            else
+            
+            // Non-headless machines (player hosts and clients) process the packet
+            if (!FikaBackendUtils.IsHeadless)
             {
                 if (FikaBackendUtils.Profile.ProfileId != packet.reviveeId)
                     return;
@@ -386,12 +404,13 @@ namespace RevivalMod.FikaModule.Common
         {
             Plugin.LogSource.LogInfo($"[GhostMode] Packet received: playerId={packet.playerId}, isAlive={packet.isAlive}, IsServer={FikaBackendUtils.IsServer}, IsHeadless={FikaBackendUtils.IsHeadless}");
 
-            if (FikaBackendUtils.IsServer && FikaBackendUtils.IsHeadless)
+            // Server (player host or headless) always forwards to all clients
+            if (FikaBackendUtils.IsServer)
             {
-                // Forward to all clients
                 SendPlayerGhostModePacket(packet.playerId, packet.isAlive);
             }
-
+            
+            // All machines process ghost mode state (needed for AI targeting)
             GameWorld gameWorld = Singleton<GameWorld>.Instance;
             if (gameWorld == null)
             {
