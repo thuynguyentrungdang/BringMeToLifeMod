@@ -42,4 +42,6 @@ public class ModConfig
     public float CriticalStateChance { get; set; }
     [JsonPropertyName("itemId")]
     public required string ItemId { get; set; }
+    [JsonPropertyName("keepDefibItem")]
+    public bool KeepDefibItem { get; set; }
 }

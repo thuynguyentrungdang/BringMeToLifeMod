@@ -75,6 +75,14 @@ namespace RevivalMod.Fika
             SendReviveCanceledPacketEmitted?.Invoke(reviveeId, reviverId);
         }
 
+        public delegate void SendPlayerGhostModePacketEvent(string playerId, bool isAlive);
+        public static event SendPlayerGhostModePacketEvent SendPlayerGhostModePacketEmitted;
+        public static void SendPlayerGhostModePacket(string playerId, bool isAlive)
+        {
+            Plugin.LogSource.LogDebug($"Sending ghost mode packet: playerId={playerId}, isAlive={isAlive}");
+            SendPlayerGhostModePacketEmitted?.Invoke(playerId, isAlive);
+        }
+
         //public delegate void SendRevivedPacketEvent(string reviverId, NetPeer peer);
         //public static event SendRevivedPacketEvent SendRevivedPacketEmitted;
         //public static void SendRevivedPacket(string reviverId, NetPeer peer)

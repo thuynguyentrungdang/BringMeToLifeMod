@@ -33,6 +33,7 @@ namespace RevivalMod.Helpers
         public static float REVIVAL_RANGE_Y; 
         public static float REVIVAL_RANGE_Z;
         public static string ITEM_ID;
+        public static bool KEEP_DEFIB_ITEM;
 
         // Hardcore Mode
         public static bool GHOST_MODE;
@@ -96,6 +97,8 @@ namespace RevivalMod.Helpers
 
             ITEM_ID = MOD_CONFIG.ItemId;
 
+            KEEP_DEFIB_ITEM = MOD_CONFIG.KeepDefibItem;
+
             #endregion
 
             #region Hardcore Mode Settings
@@ -130,7 +133,7 @@ namespace RevivalMod.Helpers
                 
                 return JsonConvert.DeserializeObject<ModConfig>(payload);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 NotificationManagerClass.DisplayWarningNotification("Failed to load Bring Me To Life server config - check the server");
                 
