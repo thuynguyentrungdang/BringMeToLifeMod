@@ -150,14 +150,19 @@ namespace RevivalMod.Features
             // Severely restrict movement
             player.Physical.WalkSpeedLimit = MOVEMENT_SPEED_MULTIPLIER;
             
-            // Force player to crouch
+            // Force player to crouch and prevent shooting
             if (player.MovementContext != null)
             {
                 player.HandsController.IsAiming = false;
                 player.MovementContext.SetPoseLevel(0f, true);
                 player.MovementContext.IsInPronePose = true;
                 player.ActiveHealthController.SetStaminaCoeff(1f);
-                //player.SetEmptyHands(null);
+                
+                // Continuously force empty hands if player tries to equip a weapon
+                if (player.HandsController is Player.FirearmController)
+                {
+                    player.SetEmptyHands(null);
+                }
             }
             else
             {
@@ -725,6 +730,9 @@ namespace RevivalMod.Features
                 player.MovementContext.EnableSprint(false);
                 player.MovementContext.SetPoseLevel(0f, true);
                 player.MovementContext.IsInPronePose = true;
+                
+                // Force player to put away weapon - prevents shooting while downed
+                player.SetEmptyHands(null);
 
                 // Enable Ghost mode - make AI ignore downed player
                 // NOTE: We do NOT modify IsAlive - that breaks the death animation when Kill() is called

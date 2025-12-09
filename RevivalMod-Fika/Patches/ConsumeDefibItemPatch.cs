@@ -26,8 +26,6 @@ public class ConsumeDefibItemPatch
 
             if (___defibItem == null)
                 return;
-
-            FikaPlayer fikaPlayer = (FikaPlayer)___player;
             InventoryController inventoryController = fikaPlayer.InventoryController;
             
             // Discard the item

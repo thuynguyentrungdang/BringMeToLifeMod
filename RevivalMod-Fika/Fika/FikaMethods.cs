@@ -262,6 +262,9 @@ namespace RevivalMod.FikaModule.Common
                 try
                 {
                     Singleton<FikaServer>.Instance.SendData(ref packet, DeliveryMethod.ReliableOrdered, true);
+                    
+                    // Host must also process locally since we don't receive our own packets
+                    ProcessGhostModeLocally(playerId, isAlive);
                 }
                 catch (Exception ex)
                 {
@@ -271,6 +274,34 @@ namespace RevivalMod.FikaModule.Common
             else if (FikaBackendUtils.IsClient)
             {
                 Singleton<FikaClient>.Instance.SendData(ref packet, DeliveryMethod.ReliableSequenced);
+            }
+        }
+        
+        /// <summary>
+        /// Processes ghost mode state locally. Called by host when sending packets (since hosts don't receive their own packets).
+        /// </summary>
+        private static void ProcessGhostModeLocally(string playerId, bool isAlive)
+        {
+            Plugin.LogSource.LogInfo($"[GhostMode] Processing locally: playerId={playerId}, isAlive={isAlive}");
+            
+            GameWorld gameWorld = Singleton<GameWorld>.Instance;
+            if (gameWorld == null)
+                return;
+
+            Player targetPlayer = gameWorld.GetEverExistedPlayerByID(playerId);
+            
+            if (!isAlive)
+            {
+                // Player entering ghost mode
+                PlayersInGhostMode.Add(playerId);
+                Plugin.LogSource.LogInfo($"[GhostMode] Local: Player {playerId} added to ghost mode ({PlayersInGhostMode.Count} total)");
+                // Note: SAIN patch handles AI targeting via IsEnemyValidPostfix
+            }
+            else
+            {
+                // Player exiting ghost mode
+                PlayersInGhostMode.Remove(playerId);
+                Plugin.LogSource.LogInfo($"[GhostMode] Local: Player {playerId} removed from ghost mode ({PlayersInGhostMode.Count} remaining)");
             }
         }
 

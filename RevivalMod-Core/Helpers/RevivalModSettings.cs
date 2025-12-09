@@ -133,7 +133,7 @@ namespace RevivalMod.Helpers
                 
                 return JsonConvert.DeserializeObject<ModConfig>(payload);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 NotificationManagerClass.DisplayWarningNotification("Failed to load Bring Me To Life server config - check the server");
                 
