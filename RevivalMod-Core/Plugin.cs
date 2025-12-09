@@ -37,7 +37,6 @@ namespace RevivalMod
             new GameStartedPatch().Enable();
             new DeathPatch().Enable();
             new AvailableActionsPatch().Enable();
-            new DisableShootingPatch().Enable();
 
             LogSource.LogInfo("Revival plugin initialized! Press F5 to use your defibrillator when in critical state.");
             TryInitFikaAssembly();

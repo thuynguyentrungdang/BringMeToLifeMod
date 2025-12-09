@@ -12,7 +12,7 @@ namespace RevivalMod.Helpers
     {
         #region Settings Properties
         
-        public static ModConfig MOD_CONFIG;
+        public static ModConfig ModConfig;
 
         // Key Bindings
         public static ConfigEntry<KeyCode> SELF_REVIVAL_KEY;
@@ -32,7 +32,6 @@ namespace RevivalMod.Helpers
         public static float REVIVAL_RANGE_X;
         public static float REVIVAL_RANGE_Y; 
         public static float REVIVAL_RANGE_Z;
-        public static string ITEM_ID;
 
         // Hardcore Mode
         public static bool GHOST_MODE;
@@ -47,7 +46,7 @@ namespace RevivalMod.Helpers
 
         public async static void Init(ConfigFile config)
         {
-            MOD_CONFIG = await LoadFromServer();
+            ModConfig = await LoadFromServer();
             #region Key Bindings Settings
 
             SELF_REVIVAL_KEY = config.Bind(
@@ -68,45 +67,43 @@ namespace RevivalMod.Helpers
 
             #region Revival Mechanics Settings
 
-            SELF_REVIVAL_ENABLED = MOD_CONFIG.EnabledSelfRevival;
+            SELF_REVIVAL_ENABLED = ModConfig.EnabledSelfRevival;
 
-            REVIVAL_HOLD_DURATION = MOD_CONFIG.SelfRevivalHoldDuration;
+            REVIVAL_HOLD_DURATION = ModConfig.SelfRevivalHoldDuration;
 
-            TEAM_REVIVAL_HOLD_DURATION = MOD_CONFIG.TeamRevivalHoldDuration;
+            TEAM_REVIVAL_HOLD_DURATION = ModConfig.TeamRevivalHoldDuration;
 
-            CRITICAL_STATE_TIME = MOD_CONFIG.CriticalStateDuration;
+            CRITICAL_STATE_TIME = ModConfig.CriticalStateDuration;
 
-            INVULNERABILITY_DURATION = MOD_CONFIG.InvulnerabilityDuration;
+            INVULNERABILITY_DURATION = ModConfig.InvulnerabilityDuration;
 
-            REVIVAL_COOLDOWN = MOD_CONFIG.RevivalCooldown;
+            REVIVAL_COOLDOWN = ModConfig.RevivalCooldown;
 
-            RESTORE_DESTROYED_BODY_PARTS = MOD_CONFIG.RestoreDestroyedBodyParts;
+            RESTORE_DESTROYED_BODY_PARTS = ModConfig.RestoreDestroyedBodyParts;
 
-            RESTORE_DESTROYED_BODY_PARTS_AMOUNT = MOD_CONFIG.RestoreDestroyedBodyPartsPercentage;
+            RESTORE_DESTROYED_BODY_PARTS_AMOUNT = ModConfig.RestoreDestroyedBodyPartsPercentage;
 
-            CONTUSION_EFFECT = MOD_CONFIG.ContusionEffect;
+            CONTUSION_EFFECT = ModConfig.ContusionEffect;
 
-            STUN_EFFECT = MOD_CONFIG.StunEffect;
+            STUN_EFFECT = ModConfig.StunEffect;
 
-            REVIVAL_RANGE_X = MOD_CONFIG.HitboxXDimension;
+            REVIVAL_RANGE_X = ModConfig.HitboxXDimension;
 
-            REVIVAL_RANGE_Y = MOD_CONFIG.HitboxYDimension;
+            REVIVAL_RANGE_Y = ModConfig.HitboxYDimension;
 
-            REVIVAL_RANGE_Z = MOD_CONFIG.HitboxZDimension;
-
-            ITEM_ID = MOD_CONFIG.ItemId;
+            REVIVAL_RANGE_Z = ModConfig.HitboxZDimension;
 
             #endregion
 
             #region Hardcore Mode Settings
 
-            GHOST_MODE = MOD_CONFIG.GhostMode;
+            GHOST_MODE = ModConfig.GhostMode;
 
-            GOD_MODE = MOD_CONFIG.GodMode;
+            GOD_MODE = ModConfig.GodMode;
 
-            HARDCORE_HEADSHOT_DEFAULT_DEAD = MOD_CONFIG.HeadshotsAreFatal;
+            HARDCORE_HEADSHOT_DEFAULT_DEAD = ModConfig.HeadshotsAreFatal;
 
-            HARDCORE_CHANCE_OF_CRITICAL_STATE = MOD_CONFIG.CriticalStateChance;
+            HARDCORE_CHANCE_OF_CRITICAL_STATE = ModConfig.CriticalStateChance;
 
             #endregion
 
