@@ -35,6 +35,11 @@ namespace RevivalMod.Patches
                 // Check for explicit kill override
                 if (RevivalFeatures._playerList[playerId].KillOverride)
                     return true;
+                
+                // Check if player is already in critical state & God Mode is off
+                if (RevivalFeatures._playerList[playerId].IsCritical && 
+                    !RevivalModSettings.GOD_MODE)
+                    return true;
 
                 // Check if player is invulnerable from recent revival
                 if (RevivalFeatures.IsPlayerInvulnerable(playerId))
