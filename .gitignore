@@ -3,3 +3,5 @@ RevivalMod-Server/node_modules
 RevivalMod-Server/types
 .vs
 .git
+bin/
+obj/

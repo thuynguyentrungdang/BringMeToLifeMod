@@ -19,6 +19,22 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="src\config.json" />
     </ItemGroup>
+    <ItemGroup>
+      <Content Include="obj\Debug\RevivalMod-Server.AssemblyInfoInputs.cache" />
+      <Content Include="obj\Debug\RevivalMod-Server.assets.cache" />
+      <Content Include="obj\Debug\RevivalMod-Server.csproj.AssemblyReference.cache" />
+      <Content Include="obj\project.assets.json" />
+      <Content Include="obj\project.nuget.cache" />
+      <Content Include="obj\project.packagespec.json" />
+      <Content Include="obj\RevivalMod-Server.csproj.nuget.dgspec.json" />
+      <Content Include="obj\RevivalMod-Server.csproj.nuget.g.props" />
+      <Content Include="obj\RevivalMod-Server.csproj.nuget.g.targets" />
+      <Content Include="obj\rider.project.model.nuget.info" />
+      <Content Include="obj\rider.project.restore.info" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Include="obj\Debug\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs" />
+    </ItemGroup>
     
     <PropertyGroup>
         <SPTPath>F:\SPT_4.0\SPT</SPTPath>
