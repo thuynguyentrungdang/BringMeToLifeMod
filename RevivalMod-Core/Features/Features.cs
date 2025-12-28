@@ -183,7 +183,7 @@ namespace RevivalMod.Features
                 if (criticalStateMainTimer != null)
                 {
                     criticalStateMainTimer.StopTimer();
-                    criticalStateMainTimer = null;
+                    //criticalStateMainTimer = null;
                 }
 
                 ForcePlayerDeath(player);
@@ -228,10 +228,10 @@ namespace RevivalMod.Features
                 
                 _selfRevivalKeyHoldDuration[revivalKey] = 0f;
                 
-                if (criticalStateMainTimer is not null)
+                if (criticalStateMainTimer != null)
                 {
                     criticalStateMainTimer.StopTimer();
-                    criticalStateMainTimer = null;
+                    //criticalStateMainTimer = null;
                 }
 
                 // Show revive timer
@@ -252,20 +252,18 @@ namespace RevivalMod.Features
                 {
                     _selfRevivalKeyHoldDuration.Remove(revivalKey);
                     
-                    if (criticalStateMainTimer is not null)
+                    if (criticalStateMainTimer != null)
                     {
                         // Stop timers
                         criticalStateMainTimer.StopTimer();
-                        criticalStateMainTimer = null;
+                        //criticalStateMainTimer = null;
                     }
 
                     TryPerformManualRevival(player);
                     
                     // Consume the item if not in test mode
                     if (!RevivalModSettings.TESTING.Value)
-                    {
                         ConsumeDefibItem(player, GetDefib(player.Inventory.GetPlayerItems(EPlayerItems.Equipment)));
-                    }
                 }
             }
 
@@ -277,8 +275,8 @@ namespace RevivalMod.Features
             // Close revive timer
             owner.CloseObjectivesPanel();
             
-            if (criticalStateMainTimer is not null)
-                // Resume critical state timer
+            // Resume critical state timer
+            if (criticalStateMainTimer != null)
                 criticalStateMainTimer.StartCountdown(_playerList[player.ProfileId].CriticalTimer,"Critical State Timer", TimerPosition.MiddleCenter);
 
             NotificationManagerClass.DisplayMessageNotification(
@@ -369,10 +367,10 @@ namespace RevivalMod.Features
                     ENotificationDurationType.Long,
                     ENotificationIconType.Default,
                     Color.green);
-                if (criticalStateMainTimer is not null)
+                if (criticalStateMainTimer != null)
                 {
                     criticalStateMainTimer.StopTimer();
-                    criticalStateMainTimer = null;
+                    //criticalStateMainTimer = null;
                 }
 
                 Plugin.LogSource.LogInfo($"Team revival performed for player {playerId}");
@@ -496,11 +494,11 @@ namespace RevivalMod.Features
         /// </summary>
         private static void CleanupCriticalState(Player player, string playerId)
         {
-            if (criticalStateMainTimer is not null)
+            if (criticalStateMainTimer != null)
             {
                 // Stop the main critical state timer
                 criticalStateMainTimer.StopTimer();
-                criticalStateMainTimer = null;
+                //criticalStateMainTimer = null;
             }
             
             // If player is leaving critical state without revival, clean up
@@ -539,10 +537,10 @@ namespace RevivalMod.Features
             _playerList[playerId].LastRevivalTimesByPlayer = 
                 (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
             
-            if (criticalStateMainTimer is not null)
+            if (criticalStateMainTimer != null)
             {
                 criticalStateMainTimer.StopTimer();
-                criticalStateMainTimer = null;
+                //criticalStateMainTimer = null;
             }
 
             // Show successful revival notification
@@ -1064,11 +1062,11 @@ namespace RevivalMod.Features
                 // Get the damage type that initially caused critical state
                 EDamageType damageType = _playerList[playerId].PlayerDamageType;
 
-                if (criticalStateMainTimer is not null)
+                if (criticalStateMainTimer != null)
                 {
                     // Stop countdown timer
                     criticalStateMainTimer.StopTimer();
-                    criticalStateMainTimer = null;
+                    //criticalStateMainTimer = null;
                 }
                 
                 RemovePlayerFromCriticalState(playerId);
