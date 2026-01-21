@@ -13,7 +13,7 @@ namespace RevivalModServer.Services;
 [Injectable]
 public class RevivalModTraderService(ISptLogger<RevivalModTraderService> logger, DatabaseService databaseService)
 {
-    public bool AddNewTradeOffer(string traderName, string currencyType, string itemId, int price, int loyaltyLevel)
+    public void AddNewTradeOffer(string traderName, string currencyType, string itemId, int price, int loyaltyLevel)
     {
         try
         {
@@ -56,8 +56,8 @@ public class RevivalModTraderService(ISptLogger<RevivalModTraderService> logger,
                 {
                     new BarterScheme
                     {
-                        Count = Convert.ToDouble(variables[2]),
-                        Template = variables[1]
+                        Count = Convert.ToDouble(price),
+                        Template = currencyId
                     }
                 }
             };
