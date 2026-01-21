@@ -27,7 +27,8 @@ public class RevivalModTraderService(ISptLogger<RevivalModTraderService> logger,
                 "Peacekeeper" => "5935c25fb3acc3127c3d8cd9",
                 "Ref" => "6617beeaa9cfa777ca915b7c",
                 "Skier" => "58330581ace78e27b8b10cee",
-                _ => traderName
+                //default to therapist if the trader name is incorrect
+                _ => "54cb57776803fa99248b456e"
             };
             string currencyId = currencyType switch
             {
@@ -35,6 +36,7 @@ public class RevivalModTraderService(ISptLogger<RevivalModTraderService> logger,
                 "RUB" => ItemTpl.MONEY_ROUBLES,
                 "EUR" => ItemTpl.MONEY_EUROS,
                 "GP" => ItemTpl.MONEY_GP_COIN,
+                //default to rub if the currency id is incorrect
                 _ => ItemTpl.MONEY_ROUBLES
             };
             MongoId uid = new();
@@ -50,7 +52,7 @@ public class RevivalModTraderService(ISptLogger<RevivalModTraderService> logger,
                 ParentId = "hideout",
                 SlotId = "hideout"
             };
-            List<List<BarterScheme>> barterScheme = new() // Holy shit BSG.
+            List<List<BarterScheme>> barterScheme = new() // taken from svm, idk why bsg made it like this
             {
                 new List<BarterScheme>
                 {
