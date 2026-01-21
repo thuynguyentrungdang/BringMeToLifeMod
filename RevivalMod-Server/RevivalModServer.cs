@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using RevivalModServer.Models;
+using RevivalModServer.Services;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Helpers;
@@ -39,7 +40,6 @@ public class RevivalModServer (
         _modConfig = modHelper.GetJsonDataFromFile<ModConfig>(pathToMod, "config/config.json");
         
         customStaticRouter.PassConfig(_modConfig);
-        
         await Task.CompletedTask;
     }
 

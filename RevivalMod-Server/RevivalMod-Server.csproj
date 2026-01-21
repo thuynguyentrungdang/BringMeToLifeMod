@@ -35,6 +35,9 @@
     <ItemGroup>
       <Compile Include="obj\Debug\.NETCoreApp,Version=v9.0.AssemblyAttributes.cs" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Services\" />
+    </ItemGroup>
     
     <PropertyGroup>
         <SPTPath>F:\SPT_4.0\SPT</SPTPath>
@@ -55,8 +58,7 @@
         <ItemGroup>
             <ConfigFiles Include="config\*.json" />
         </ItemGroup>
-        <Copy SourceFiles="@(ConfigFiles)"
-              DestinationFiles="@(ConfigFiles->'$(ModsDirectoryPath)\config\%(Filename)%(Extension)')" />
+        <Copy SourceFiles="@(ConfigFiles)" DestinationFiles="@(ConfigFiles->'$(ModsDirectoryPath)\config\%(Filename)%(Extension)')" />
 
         <Message Text="Files copied successfully." Importance="high" />
     </Target>
